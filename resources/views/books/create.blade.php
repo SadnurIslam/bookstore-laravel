@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout',['title'=>'Create Book'])
 
 @section('page-content')
     <legend>Create Book</legend>
