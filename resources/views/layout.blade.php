@@ -25,8 +25,7 @@
         </ul>
     </div>
 </nav>
-<div class="container py-3">
-
+<div class="container py-2">
     @yield('page-content')
 </div>
 
