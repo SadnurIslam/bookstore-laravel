@@ -7,10 +7,21 @@ use App\Models\Book;
 
 class BooksController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+
+        if($request->has('search')){
+            $search = $request->get('search');
+            $books = Book::query()
+                        ->where('title','like','%'.$search.'%')
+                        ->orWhere('author','like','%'.$search.'%')
+                        ->paginate(10);
+            return view("books.index",['books'=>$books]);
+        }
+
         $books = Book::paginate(10);
         return view("books.index",['books'=>$books]);
     }
+
     public function show($id){
         $book = Book::findOrFail($id);
         return view("books.show",['book'=>$book]);
@@ -23,7 +34,7 @@ class BooksController extends Controller
     public function store(Request $request){
 
         $rules = [
-            'title'=> 'required|alpha_num|max:255',
+            'title'=> 'required|max:255',
             'author'=> 'required',
             'isbn'=> 'required|unique:books|alpha_num|size:13',
             'price'=> 'required|decimal:0,10|min:0',
@@ -39,5 +50,35 @@ class BooksController extends Controller
         $book->save();
         // return redirect()->route('books.index');
         return redirect()->route('books.show',['id'=>$book->id])->with('status','Book created successfully');
+    }
+
+    public function edit($id){
+        $book = Book::findOrFail($id);
+        return view("books.edit",['book'=>$book]);
+    }
+
+    public function update(Request $request){
+        $rules = [
+            'title'=> 'required|max:255',
+            'author'=> 'required',
+            'isbn'=> 'required|alpha_num|size:13|unique:books,isbn,'.$request->id,
+            'price'=> 'required|decimal:0,10|min:0',
+            'stock'=> 'required|integer|min:0',
+        ];
+        $request->validate($rules);
+        $book = Book::findOrFail($request->id);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->isbn = $request->isbn;
+        $book->price = $request->price;
+        $book->stock = $request->stock;
+        $book->save();
+        return redirect()->route('books.show',$book->id)->with('status','Edited Successfully');
+    }
+
+    public function destroy($id){
+        $book = Book::findOrFail($id);
+        $book->delete();
+        return redirect()->route('books.index')->with('status','Book deleted successfully');
     }
 }

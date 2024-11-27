@@ -16,5 +16,11 @@ use App\Http\Controllers\BooksController;
 
 Route::get('/',[BooksController::class,'index'])->name('books.index');
 Route::get('books/{id}/show',[BooksController::class,'show'])->name('books.show');
+
 Route::get('books/create',[BooksController::class,'create'])->name('books.create');
 Route::post('books/store',[BooksController::class,'store'])->name('books.store');
+
+Route::get('books/{id}/edit',[BooksController::class,'edit'])->name('books.edit');
+Route::put('books/update',[BooksController::class,'update'])->name('books.update');
+
+Route::delete('books/{id}',[BooksController::class,'destroy'])->name('books.destroy');
