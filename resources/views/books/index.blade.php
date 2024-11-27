@@ -2,6 +2,15 @@
 
 @section('page-content')
 
+<div class="row mt-2">
+    <div class="col-9">
+        Search Form
+    </div>
+    <div class="col-3 text-right">
+        <a href="{{route('books.create')}}" class="btn btn-primary">New Book</a>
+    </div>
+</div>
+
 <h1>Book List</h1>
 <table class="table table-striped">
     <thead>

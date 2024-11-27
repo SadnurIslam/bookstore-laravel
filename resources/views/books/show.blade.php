@@ -2,6 +2,10 @@
 
 @section('page-content')
 
+    @if(session('status'))
+        <div class="alert alert-success">{{session('status')}}</div>
+    @endif
+
     <h1>Book Details</h1>
     <table class="table">
         <tr>
